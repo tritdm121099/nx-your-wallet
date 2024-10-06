@@ -22,7 +22,7 @@
             "input": "apps/yw/public"
           }
         ],
-        "styles": ["apps/yw/src/styles.scss"],
+        "styles": ["apps/yw/src/styles.scss", "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"],
         "scripts": []
       },
       "configurations": {
