@@ -1,5 +1,5 @@
 {
-  "name": "layout",
+  "name": "client-shell-layout",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/client/shell/ui/layout/src",
   "prefix": "yw",

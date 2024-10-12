@@ -1,5 +1,5 @@
 {
-  "name": "feature",
+  "name": "client-shell-feature",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/client/shell/feature/src",
   "prefix": "yw",

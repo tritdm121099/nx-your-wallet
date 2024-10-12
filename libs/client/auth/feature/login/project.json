@@ -1,5 +1,5 @@
 {
-  "name": "login",
+  "name": "auth-feature-login",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/client/auth/feature/login/src",
   "prefix": "yw",

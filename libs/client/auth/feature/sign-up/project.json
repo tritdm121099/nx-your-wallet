@@ -1,5 +1,5 @@
 {
-  "name": "sign-up",
+  "name": "auth-feature-sign-up",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/client/auth/feature/sign-up/src",
   "prefix": "yw",
