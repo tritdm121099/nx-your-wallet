@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AuthModule } from '@yw/api/auth/feature';
+import { UserModule } from '@yw/api/user/feature';
+import { PgPrismaClientModule } from '@yw/pg-prisma-client';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [AuthModule, UserModule, PgPrismaClientModule, ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

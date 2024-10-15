@@ -15,14 +15,24 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@yw/client/auth/data-access": ["libs/client/auth/data-access/src/index.ts"],
-      "@yw/client/shell/feature": ["libs/client/shell/feature/src/index.ts"],
-      "@yw/client/shell/ui/layout": ["libs/client/shell/ui/layout/src/index.ts"],
+      "@yw/api/auth/data-access": ["libs/api/auth/data-access/src/index.ts"],
+      "@yw/api/auth/feature": ["libs/api/auth/feature/src/index.ts"],
+      "@yw/api/user/data-access": ["libs/api/user/data-access/src/index.ts"],
+      "@yw/api/user/feature": ["libs/api/user/feature/src/index.ts"],
+      "@yw/client/auth/data-access": [
+        "libs/client/auth/data-access/src/index.ts"
+      ],
       "@yw/client/auth/login": ["libs/client/auth/feature/login/src/index.ts"],
+      "@yw/client/auth/sign-up": [
+        "libs/client/auth/feature/sign-up/src/index.ts"
+      ],
+      "@yw/client/home/feature": ["libs/client/home/feature/src/index.ts"],
+      "@yw/client/shell/feature": ["libs/client/shell/feature/src/index.ts"],
+      "@yw/client/shell/ui/layout": [
+        "libs/client/shell/ui/layout/src/index.ts"
+      ],
       "@yw/pg-prisma-client": ["libs/pg-prisma-client/src/index.ts"],
-      "@yw/prisma-schema": ["libs/prisma-schema/src/index.ts"],
-      "@yw/client/auth/sign-up": ["libs/client/auth/feature/sign-up/src/index.ts"],
-      "@yw/client/home/feature": ["libs/client/home/feature/src/index.ts"]
+      "@yw/prisma-schema": ["libs/prisma-schema/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
