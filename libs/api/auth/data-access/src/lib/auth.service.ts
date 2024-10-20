@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { User } from '@prisma-clients/pg-prisma';
+import { User } from '@prisma/pg-prisma-clients';
 import { UserService } from '@yw/api/user/data-access';
 import { CookieOptions, Response } from 'express';
 import { GoogleUser } from './interfaces';

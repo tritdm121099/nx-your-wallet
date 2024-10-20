@@ -3,10 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  // output into a separate subdirectory so multiple schemas can be used in a monorepo
-  // this make the import path `@prisma-clients/db` instead of `@prisma-clients`
-  // Customize to make the most sense for your project
-  output   = "../../../node_modules/@prisma-clients/pg-prisma"
+  output   = "../../../node_modules/@prisma/pg-prisma-clients"
 }
 
 datasource db {
