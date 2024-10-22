@@ -17,6 +17,7 @@
     "paths": {
       "@yw/api/auth/data-access": ["libs/api/auth/data-access/src/index.ts"],
       "@yw/api/auth/feature": ["libs/api/auth/feature/src/index.ts"],
+      "@yw/api/shared": ["libs/api/shared/src/index.ts"],
       "@yw/api/user/data-access": ["libs/api/user/data-access/src/index.ts"],
       "@yw/api/user/feature": ["libs/api/user/feature/src/index.ts"],
       "@yw/client/auth/data-access": [
