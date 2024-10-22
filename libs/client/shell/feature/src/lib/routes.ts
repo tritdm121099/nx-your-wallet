@@ -23,6 +23,13 @@ export const webRoutes: Routes = [
         loadComponent: () =>
           import('@yw/client/auth/sign-up').then((mod) => mod.SignUpComponent),
       },
+      {
+        path: 'auth/google-oauth-success-redirect',
+        loadComponent: () =>
+          import('@yw/client/auth/login').then(
+            (mod) => mod.GoogleRedirectComponent
+          ),
+      },
     ],
   },
 ];

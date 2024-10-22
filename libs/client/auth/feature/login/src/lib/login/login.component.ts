@@ -12,6 +12,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -25,11 +26,17 @@ import { RouterLink } from '@angular/router';
     NzFormModule,
     NzCardModule,
     RouterLink,
+    NzIconModule,
   ],
   template: `
     <nz-card class="w-[500px] m-auto">
       <h1 class="text-3xl font-bold mb-4">Sign In</h1>
-      <form nz-form [nzLayout]="'vertical'" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <form
+        nz-form
+        [nzLayout]="'vertical'"
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+      >
         <nz-form-item>
           <nz-form-label [nzSpan]="7" nzRequired>E-mail</nz-form-label>
           <nz-form-control [nzErrorTip]="emailErrorTpl">
@@ -74,15 +81,6 @@ import { RouterLink } from '@angular/router';
           <a href="#" nz-button [nzType]="'link'" disabled>Forgot Password?</a>
         </div>
       </form>
-      <!-- <div class="flex items-center justify-between mt-4">
-        <span class="w-1/5 border-b dark:border-gray-600 lg:w-1/5"></span>
-        <p
-          class="text-xs text-center text-black hover:underline m-0"
-        >
-          or login with Social Media
-        </p>
-        <span class="w-1/5 border-b dark:border-gray-400 lg:w-1/5"></span>
-      </div> -->
       <p class="mt-8 text-xs font-light text-center text-gray-400">
         Don't have an account?
         <a
@@ -91,6 +89,23 @@ import { RouterLink } from '@angular/router';
           >Create One</a
         >
       </p>
+
+      <div class="flex items-center justify-between my-4">
+        <span class="w-1/5 border-b dark:border-gray-600 lg:w-1/5"></span>
+        <p class="text-xs text-center text-black hover:underline m-0">
+          or login with Social Media
+        </p>
+        <span class="w-1/5 border-b dark:border-gray-400 lg:w-1/5"></span>
+      </div>
+      <button
+        nz-button
+        nzType="default"
+        class="!flex w-full items-center justify-center"
+        (click)="loginGoogle()"
+      >
+        <span nz-icon nzType="google" nzTheme="outline"></span>
+        <span class="font-bold text-center px-4">Sign in with Google</span>
+      </button>
     </nz-card>
   `,
   styles: `
@@ -126,5 +141,9 @@ export class LoginComponent {
         }
       });
     }
+  }
+
+  loginGoogle() {
+    window.location.href = `http://localhost:3000/api/auth/google`;
   }
 }
