@@ -1,34 +1,52 @@
-import { Controller, Post, Body, Get, Req, Res, UseGuards } from "@nestjs/common";
-import { GoogleOAuthGuard } from "./guards";
-import { Response } from 'express';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards
+} from '@nestjs/common';
 import { AuthService } from '@yw/api/auth/data-access';
+import { Publish } from '@yw/api/shared';
+import { Response } from 'express';
+import { GoogleOAuthGuard } from './guards';
 
-@Controller("auth")
+@Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
-  
-  @Post("sign-up")
+
+  @Publish()
+  @Post('sign-up')
   signUp(@Body() userData: any) {
     // Logic for signing up a user
-    return { message: "User signed up successfully", userData };
+    return { message: 'User signed up successfully', userData };
   }
 
-  @Post("sign-in")
+  @Publish()
+  @Post('sign-in')
   signIn(@Body() credentials: any) {
     // Logic for signing in a user
-    return { message: "User signed in successfully", credentials };
+    return { message: 'User signed in successfully', credentials };
   }
 
-  @Get("")
+  // @Post('auth/logout')
+  // async logout(@Request() req) {
+  //   return req.logout();
+  // }
+
+  @Get('')
   refreshToken() {
     return true;
   }
 
+  @Publish()
   @UseGuards(GoogleOAuthGuard)
   @Get('google')
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async googleAuth() {}
 
+  @Publish()
   @UseGuards(GoogleOAuthGuard)
   @Get('google-auth-redirect')
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

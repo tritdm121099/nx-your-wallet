@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/pg-prisma-clients';
 import { UserService } from '@yw/api/user/data-access';
@@ -7,7 +12,10 @@ import { GoogleUser } from './interfaces';
 
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService, private jwtService: JwtService) {}
+  constructor(
+    private userService: UserService,
+    private jwtService: JwtService
+  ) {}
 
   async signInWithGoogle(
     user: GoogleUser,
@@ -78,7 +86,7 @@ export class AuthService {
     };
 
     res.cookie(
-      "jwt",
+      'jwt',
       this.jwtService.sign({
         id: user.id,
         sub: {
