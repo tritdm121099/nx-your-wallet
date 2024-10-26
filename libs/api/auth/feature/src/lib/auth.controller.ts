@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Inject,
   Post,
   Req,
   Res,
@@ -9,12 +10,17 @@ import {
 } from '@nestjs/common';
 import { AuthService } from '@yw/api/auth/data-access';
 import { Publish } from '@yw/api/shared';
+import { AuthConfig, authConfiguration, Publish } from '@yw/api/shared';
 import { Response } from 'express';
 import { GoogleOAuthGuard } from './guards';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    @Inject(authConfiguration.KEY)
+    private authConfig: AuthConfig
+  ) {}
 
   @Publish()
   @Post('sign-up')
@@ -56,7 +62,7 @@ export class AuthController {
       res
     );
     return res.redirect(
-      `${process.env['GOOGLE_REDIRECT_URL_CLIENT_ANGULAR']}?jwtUser=${encodedUser}`
+      `${this.authConfig.google.redirectClientUrl}?jwtUser=${encodedUser}`
     );
   }
 }

@@ -1,18 +1,27 @@
-import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { EStrategies, GoogleUser } from '@yw/api/auth/data-access';
+import { AuthConfig, authConfiguration } from '@yw/api/shared';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(
   Strategy,
   EStrategies.GOOGLE
 ) {
-  constructor() {
+  constructor(
+    @Inject(authConfiguration.KEY)
+    private authConfig: AuthConfig
+  ) {
     super({
-      clientID: process.env['GOOGLE_CLIENT_ID'],
-      clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-      callbackURL: process.env['GOOGLE_REDIRECT_URL'],
+      clientID: authConfig.google.clientId,
+      clientSecret: authConfig.google.clientSecret,
+      callbackURL: authConfig.google.redirectUrl,
       scope: ['email', 'profile'],
     });
   }
@@ -20,7 +29,11 @@ export class GoogleStrategy extends PassportStrategy(
   async validate(
     accessToken: string,
     refreshToken: string,
-    profile: { name: {givenName: string, familyName: string}, emails: {value: string}[], photos: {value: string}[] },
+    profile: {
+      name: { givenName: string; familyName: string };
+      emails: { value: string }[];
+      photos: { value: string }[];
+    },
     done: VerifyCallback
   ) {
     try {

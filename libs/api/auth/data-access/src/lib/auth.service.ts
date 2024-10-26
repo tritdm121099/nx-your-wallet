@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   InternalServerErrorException,
   Logger,
@@ -9,12 +10,15 @@ import { User } from '@prisma/pg-prisma-clients';
 import { UserService } from '@yw/api/user/data-access';
 import { CookieOptions, Response } from 'express';
 import { GoogleUser } from './interfaces';
+import { AuthConfig, authConfiguration } from '@yw/api/shared';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UserService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    @Inject(authConfiguration.KEY)
+    private authConfig: AuthConfig
   ) {}
 
   async signInWithGoogle(
@@ -75,25 +79,23 @@ export class AuthService {
     return this.jwtService.sign(userData);
   }
 
-  expiresTimeTokenMilliseconds = 7 * 24 * 60 * 60 * 1000;
-
   setJwtTokenToCookies(res: Response, user: User) {
     const expirationDateInMilliseconds =
-      new Date().getTime() + this.expiresTimeTokenMilliseconds;
+      new Date().getTime() + this.authConfig.jwt.expiresTime;
     const cookieOptions: CookieOptions = {
       httpOnly: true, // this ensures that the cookie cannot be accessed through JavaScript!
       expires: new Date(expirationDateInMilliseconds),
     };
 
-    res.cookie(
-      'jwt',
-      this.jwtService.sign({
-        id: user.id,
-        sub: {
-          email: user.email,
-        },
-      }),
-      cookieOptions
-    );
+    res.cookie('jwt', this.generateJwtToken(user), cookieOptions);
+  }
+
+  generateJwtToken(user: User) {
+    return this.jwtService.sign({
+      id: user.id,
+      sub: {
+        email: user.email,
+      },
+    });
   }
 }
