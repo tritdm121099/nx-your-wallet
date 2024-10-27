@@ -6,12 +6,11 @@ import {
   Post,
   Req,
   Res,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
-import { AuthService } from '@yw/api/auth/data-access';
-import { Publish } from '@yw/api/shared';
+import { AuthService, SignInDto, SignUpDto } from '@yw/api/auth/data-access';
 import { AuthConfig, authConfiguration, Publish } from '@yw/api/shared';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { GoogleOAuthGuard } from './guards';
 
 @Controller('auth')
@@ -24,24 +23,34 @@ export class AuthController {
 
   @Publish()
   @Post('sign-up')
-  signUp(@Body() userData: any) {
-    // Logic for signing up a user
-    return { message: 'User signed up successfully', userData };
+  signUp(@Body() data: SignUpDto, @Res() res: Response) {
+    return this.authService.signUp(res, data);
   }
 
   @Publish()
   @Post('sign-in')
-  signIn(@Body() credentials: any) {
-    // Logic for signing in a user
-    return { message: 'User signed in successfully', credentials };
+  async signIn(@Body() data: SignInDto, @Res() res: Response) {
+    // return this.authService.defaultSignIn(res, data);
+    await this.authService.defaultSignIn(res, data);
+    return true;
   }
 
-  // @Post('auth/logout')
-  // async logout(@Request() req) {
-  //   return req.logout();
-  // }
+  @Post('logout')
+  async logout(@Req() req: Request, @Res() res: Response) {
+    res.clearCookie('jwt'); // Clear the JWT cookie
+    // req.logout(
+    //   {
+    //     keepSessionInfo: false,
+    //   },
+    //   (err) => {
+    //     return err;
+    //   }
+    // );
 
-  @Get('')
+    return res.status(200).json({ message: 'Logged out successfully' });
+  }
+
+  @Get('refresh-token')
   refreshToken() {
     return true;
   }

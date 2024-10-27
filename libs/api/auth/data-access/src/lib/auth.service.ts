@@ -10,6 +10,8 @@ import { User } from '@prisma/pg-prisma-clients';
 import { UserService } from '@yw/api/user/data-access';
 import { CookieOptions, Response } from 'express';
 import { GoogleUser } from './interfaces';
+import * as bcrypt from 'bcrypt';
+import { SignInDto, SignUpDto } from './dtos';
 import { AuthConfig, authConfiguration } from '@yw/api/shared';
 
 @Injectable()
@@ -20,6 +22,64 @@ export class AuthService {
     @Inject(authConfiguration.KEY)
     private authConfig: AuthConfig
   ) {}
+
+  async validateUser(email: string, password: string): Promise<User> {
+    const user = await this.userService.getUser({ where: { email } });
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    if (user.password) {
+      const isMatch: boolean = bcrypt.compareSync(password, user.password);
+      if (!isMatch) {
+        throw new BadRequestException('Password does not match');
+      }
+    } else {
+      throw new BadRequestException('Have used other method to register!');
+    }
+    return user;
+  }
+
+  async signUp(res: Response, params: SignUpDto) {
+    if (params.password !== params.confirm) {
+      throw new BadRequestException('Confirm password not match');
+    }
+
+    const existingUser = await this.userService.getUser({
+      where: {
+        email: params.email,
+      },
+    });
+
+    if (existingUser) {
+      throw new BadRequestException('User already exists');
+    }
+
+    const hashedPassword = await bcrypt.hash(
+      params.password,
+      Number(this.authConfig.passwordSalt)
+    );
+    const newUser = await this.userService.createUser({
+      data: {
+        email: params.email,
+        name: params.name,
+        password: hashedPassword,
+      },
+    });
+
+    this.setJwtTokenToCookies(res, newUser);
+
+    return res.json({
+      message: 'Sign up success',
+    });
+  }
+
+  async defaultSignIn(res: Response, params: SignInDto) {
+    const user = await this.validateUser(params.email, params.password);
+    this.setJwtTokenToCookies(res, user);
+    return res.json({
+      message: 'Sign in success',
+    });
+  }
 
   async signInWithGoogle(
     user: GoogleUser,
