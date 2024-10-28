@@ -1,4 +1,4 @@
 export * from './auth-service.module';
-export * from './auth.service';
+export * from './services/auth/auth.service';
 export * from './interfaces';
 export * from './dtos';

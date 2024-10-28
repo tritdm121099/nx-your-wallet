@@ -1,21 +1,13 @@
 import { Global, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthConfig, authConfiguration } from '@yw/api/shared';
-import { AuthService } from './auth.service';
+import { AuthService, TokenService } from './services';
 
 @Global()
 @Module({
   controllers: [],
-  providers: [AuthService],
+  providers: [AuthService, TokenService],
   imports: [
-    JwtModule.registerAsync({
-      imports: [ConfigModule.forFeature(authConfiguration)],
-      useFactory: async (authConfig: AuthConfig) => ({
-        secret: authConfig.jwt.secretKey,
-      }),
-      inject: [authConfiguration.KEY],
-    }),
+    JwtModule.register({}),
   ],
   exports: [AuthService],
 })

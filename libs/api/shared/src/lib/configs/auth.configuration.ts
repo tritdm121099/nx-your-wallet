@@ -2,13 +2,16 @@ import { ConfigType, registerAs } from '@nestjs/config';
 
 export const authConfiguration = registerAs('auth', () => ({
   jwt: {
-    expiresTime:
-      Number(process.env['JWT_EXPIRES_MILLISECONDS']) ||
-      7 * 24 * 60 * 60 * 1000,
+    expiresTime: 15 * 60 * 1000,
     get expiresTimeString() {
       return this.expiresTime.toString() + 's';
     },
-    secretKey: process.env['JWT_SECRET'] || '123123'
+    refreshExpiresTime: 7 * 24 * 60 * 60 * 1000,
+    get refreshExpiresTimeString() {
+      return this.refreshExpiresTime.toString() + 's';
+    },
+    secretKey: process.env['JWT_SECRET'] || 'jwt_secret',
+    refreshSecretKey: process.env['JWT_REFRESH_SECRET'] || 'jwt_refresh_secret'
   },
   google: {
     clientId: process.env['GOOGLE_CLIENT_ID'],
