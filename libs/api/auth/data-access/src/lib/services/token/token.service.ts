@@ -1,8 +1,13 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, Logger } from '@nestjs/common';
 import { User } from '@prisma/pg-prisma-clients';
 import { UserFromJwt } from '../../interfaces';
 import { JwtService } from '@nestjs/jwt';
-import { AuthConfig, authConfiguration } from '@yw/api/shared';
+import {
+  AuthConfig,
+  authConfiguration,
+  ShellConfig,
+  shellConfiguration,
+} from '@yw/api/shared';
 import { CookieOptions, Response } from 'express';
 import { cookieAccessTokenName, cookieRefreshTokenName } from '../../constants';
 
@@ -10,8 +15,11 @@ import { cookieAccessTokenName, cookieRefreshTokenName } from '../../constants';
 export class TokenService {
   constructor(
     private jwtService: JwtService,
-    @Inject(authConfiguration.KEY) private authConfig: AuthConfig
-  ) {}
+    @Inject(authConfiguration.KEY) private authConfig: AuthConfig,
+    @Inject(shellConfiguration.KEY) private shellConfig: ShellConfig
+  ) {
+    Logger.debug(`data: ${shellConfig.isProd}`)
+  }
 
   async setTokensToCookies(res: Response, user: User) {
     const { accessToken, refreshToken } = await this.getTokens(user);
@@ -21,15 +29,12 @@ export class TokenService {
 
   setAccessTokenToCookies(res: Response, token: string) {
     const cookieOptions: CookieOptions = {
-      httpOnly: true,
+      httpOnly: false,
       maxAge: this.authConfig.jwt.expiresTime,
+      secure: this.shellConfig.isProd,
     };
 
-    res.cookie(
-      cookieAccessTokenName,
-      token,
-      cookieOptions
-    );
+    res.cookie(cookieAccessTokenName, token, cookieOptions);
   }
 
   setRefreshTokenToCookies(res: Response, token: string) {
@@ -38,13 +43,10 @@ export class TokenService {
       maxAge: this.authConfig.jwt.refreshExpiresTime,
       // sameSite: 'strict',
       // secure: true, set when https
+      secure: this.shellConfig.isProd,
     };
 
-    res.cookie(
-      cookieRefreshTokenName,
-      token,
-      cookieOptions
-    );
+    res.cookie(cookieRefreshTokenName, token, cookieOptions);
   }
 
   async getTokens(user: User) {
