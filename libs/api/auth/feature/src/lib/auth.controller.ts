@@ -8,7 +8,13 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { AuthService, SignInDto, SignUpDto } from '@yw/api/auth/data-access';
+import {
+  AuthService,
+  SignInDto,
+  SignUpDto,
+  cookieAccessTokenName,
+  cookieRefreshTokenName,
+} from '@yw/api/auth/data-access';
 import { AuthConfig, authConfiguration, Publish } from '@yw/api/shared';
 import { Request, Response } from 'express';
 import { GoogleOAuthGuard, JwtRefreshGuard } from './guards';
@@ -35,7 +41,8 @@ export class AuthController {
 
   @Post('logout')
   async logout(@Req() req: Request, @Res() res: Response) {
-    res.clearCookie('jwt'); // Clear the JWT cookie
+    res.clearCookie(cookieAccessTokenName);
+    res.clearCookie(cookieRefreshTokenName);
     // req.logout(
     //   {
     //     keepSessionInfo: false,
