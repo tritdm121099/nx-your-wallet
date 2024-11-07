@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserDef, UserService } from '@yw/client/auth/data-access';
+import { AuthService, UserDef, UserService } from '@yw/client/auth/data-access';
 import { jwtDecode } from 'jwt-decode';
 
 @Component({
@@ -20,6 +20,7 @@ export class GoogleRedirectComponent implements OnInit {
   route = inject(ActivatedRoute);
   router = inject(Router);
   userService = inject(UserService);
+  authService = inject(AuthService);
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -28,7 +29,7 @@ export class GoogleRedirectComponent implements OnInit {
       if (jwtUser) {
         const userFromJWT: UserDef = jwtDecode(jwtUser);
         this.userService.user = userFromJWT;
-        this.router.navigate(['/']);
+        this.authService.signInSuccess();
       }
     });
   }

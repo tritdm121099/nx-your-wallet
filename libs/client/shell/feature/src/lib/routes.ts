@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router';
-import { PublishLayoutComponent } from '@yw/client/shell/ui/layout';
+import { authGuard, publishGuard } from '@yw/client/auth/data-access';
 
 export const webRoutes: Routes = [
   {
     path: '',
-    component: PublishLayoutComponent,
-    children: [
+    loadComponent: () => import('@yw/client/shell/ui/layout').then(m => m.PublishLayoutComponent),
+    canMatch: [publishGuard],
+    loadChildren: () => [
       {
         path: '',
         loadComponent: () =>
@@ -32,4 +33,24 @@ export const webRoutes: Routes = [
       },
     ],
   },
+  {
+    path: '',
+    canMatch: [authGuard],
+    loadComponent: () => import('@yw/client/shell/ui/layout').then(m => m.LayoutComponent),
+    canLoad: [authGuard],
+    loadChildren: () => [
+      {
+        path: '',
+        loadComponent: () =>
+          import('@yw/client/home/feature').then(
+            (mod) => mod.DashboardComponent
+          ),
+      },
+    ],
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full'
+  }
 ];

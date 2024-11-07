@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AuthService } from '@yw/client/auth/data-access';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 
@@ -46,10 +47,13 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
       </nz-header>
 
       <nz-content class="p-5">
+        <button (click)="authService.refreshToken$().subscribe()">Test auth</button>
         <router-outlet></router-outlet>
       </nz-content>
     </nz-layout>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PublishLayoutComponent {}
+export class PublishLayoutComponent {
+  authService = inject(AuthService);
+}

@@ -1,19 +1,20 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import {
-  ReactiveFormsModule,
   FormBuilder,
-  FormGroup,
-  Validators,
   FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzCardModule } from 'ng-zorro-antd/card';
-import { NzIconModule } from 'ng-zorro-antd/icon';
 import { RouterLink } from '@angular/router';
+import { AuthService } from '@yw/client/auth/data-access';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'yw-login',
@@ -120,19 +121,26 @@ import { RouterLink } from '@angular/router';
 export class LoginComponent {
   fb = inject(FormBuilder);
   nzMsg = inject(NzMessageService);
+  authService = inject(AuthService);
 
   loginForm: FormGroup<{
-    email: FormControl<string | null>;
-    password: FormControl<string | null>;
-  }> = this.fb.group({
+    email: FormControl<string>;
+    password: FormControl<string>;
+  }> = this.fb.nonNullable.group({
     email: ['', [Validators.email]],
     password: [''],
   });
 
   onSubmit() {
     if (this.loginForm.valid) {
-      // Handle successful login here
-      console.log(this.loginForm.value);
+      const payload = this.loginForm.getRawValue();
+      this.authService.signIn$(payload).subscribe({
+        next: () => {
+        },
+        error: () => {
+          return true;
+        },
+      });
     } else {
       Object.values(this.loginForm.controls).forEach((control) => {
         if (control.invalid) {
