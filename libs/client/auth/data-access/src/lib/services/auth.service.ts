@@ -14,7 +14,7 @@ export class AuthService {
   get isAuthenticated() {
     return !!document.cookie
       .split('; ')
-      .find((row) => row.startsWith(`jwt=`));
+      .find((row) => row.startsWith(`refreshToken=`));
   }
 
   signIn$(payload: SignInDto) {
@@ -45,5 +45,9 @@ export class AuthService {
 
   logoutSuccess() {
     this.router.navigate(['/'], {onSameUrlNavigation: 'reload'});
+  }
+
+  goLoginPage() {
+    this.router.navigate(['/login']);
   }
 }
