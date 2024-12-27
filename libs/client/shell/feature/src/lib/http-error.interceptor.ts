@@ -1,8 +1,12 @@
-import { HttpErrorResponse, HttpInterceptorFn, HttpStatusCode } from '@angular/common/http';
+import {
+  HttpErrorResponse,
+  HttpInterceptorFn,
+  HttpStatusCode,
+} from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '@yw/client/auth/data-access';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { catchError, throwError } from 'rxjs';
+import { catchError, retry, switchMap, throwError } from 'rxjs';
 
 function checkNoNetworkConnection(error: unknown): boolean {
   return (
@@ -15,15 +19,24 @@ function checkNoNetworkConnection(error: unknown): boolean {
   );
 }
 
-function handleBadRequestResponse(err:HttpErrorResponse) {
-  console.error(err);
-}
-
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const modal = inject(NzModalService);
   const authService = inject(AuthService);
 
   return next(req).pipe(
+    // can infinity retry
+    retry({
+      count: 1,
+      delay: (err: HttpErrorResponse) => {
+        if (
+          err.status === HttpStatusCode.Unauthorized &&
+          !err.url?.includes('refresh-token')
+        ) {
+          return authService.refreshToken$();
+        }
+        return throwError(() => err);
+      },
+    }),
     catchError((err: HttpErrorResponse) => {
       if (checkNoNetworkConnection(err)) {
         modal.create({
@@ -32,16 +45,22 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           nzClosable: false,
         });
       } else {
-        switch(err.status) {
+        switch (err.status) {
           case HttpStatusCode.BadRequest:
-            handleBadRequestResponse(err);
+            // modal.create({
+            //   nzTitle: 'Some data not valid',
+            //   nzContent: 'Please check your data',
+            //   nzClosable: false,
+            // });
             break;
           case HttpStatusCode.Unauthorized:
             if (err.url?.includes('refresh-token')) {
-              authService.logout$().subscribe();
-              authService.goLoginPage();
-            } else {
-              authService.refreshToken$();
+              return authService.logout$().pipe(
+                switchMap(() => {
+                  authService.goLoginPage();
+                  return throwError(() => err);
+                })
+              );
             }
             break;
           default:
