@@ -147,7 +147,7 @@ export class AuthService {
     const user = await this.userService.getUser({ where: { id: userJwt.id } });
 
     if (user) {
-      await this.tokenService.getTokens(user);
+      await this.tokenService.setTokensToCookies(res, user);
 
       return res.status(200).json({
         message: 'Refresh tokens success',
