@@ -36,7 +36,7 @@ export class AuthService {
   }
 
   refreshToken$() {
-    return this.http.get('/api/auth/refresh-token');
+    return this.http.post('/api/auth/refresh-token', {});
   }
 
   signInSuccess() {
