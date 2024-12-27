@@ -1,7 +1,6 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
-import { User } from '@prisma/pg-prisma-clients';
-import { UserFromJwt } from '../../interfaces';
+import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { User } from '@prisma/pg-prisma-clients';
 import {
   AuthConfig,
   authConfiguration,
@@ -10,6 +9,7 @@ import {
 } from '@yw/api/shared';
 import { CookieOptions, Response } from 'express';
 import { cookieAccessTokenName, cookieRefreshTokenName } from '../../constants';
+import { UserFromJwt } from '../../interfaces';
 
 @Injectable()
 export class TokenService {
@@ -18,7 +18,6 @@ export class TokenService {
     @Inject(authConfiguration.KEY) private authConfig: AuthConfig,
     @Inject(shellConfiguration.KEY) private shellConfig: ShellConfig
   ) {
-    Logger.debug(`data: ${shellConfig.isProd}`)
   }
 
   async setTokensToCookies(res: Response, user: User) {
@@ -39,7 +38,7 @@ export class TokenService {
 
   setRefreshTokenToCookies(res: Response, token: string) {
     const cookieOptions: CookieOptions = {
-      httpOnly: true,
+      // httpOnly: true,
       maxAge: this.authConfig.jwt.refreshExpiresTime,
       // sameSite: 'strict',
       // secure: true, set when https

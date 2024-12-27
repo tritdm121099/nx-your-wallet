@@ -4,6 +4,7 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/pg-prisma-clients';
@@ -12,7 +13,7 @@ import { UserService } from '@yw/api/user/data-access';
 import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
 import { SignInDto, SignUpDto } from '../../dtos';
-import { GoogleUser } from '../../interfaces';
+import { GoogleUser, UserFromJwt } from '../../interfaces';
 import { TokenService } from '../token/token.service';
 
 @Injectable()
@@ -77,8 +78,8 @@ export class AuthService {
 
   async defaultSignIn(res: Response, params: SignInDto) {
     const user = await this.validateUser(params.email, params.password);
-    await this.tokenService.setTokensToCookies(res, user)
-    
+    await this.tokenService.setTokensToCookies(res, user);
+
     return res.json({
       message: 'Sign in success',
     });
@@ -140,5 +141,19 @@ export class AuthService {
     const { password, ...userData } = user;
 
     return this.jwtService.sign(userData);
+  }
+
+  async refreshToken(userJwt: UserFromJwt, res: Response) {
+    const user = await this.userService.getUser({ where: { id: userJwt.id } });
+
+    if (user) {
+      await this.tokenService.getTokens(user);
+
+      return res.status(200).json({
+        message: 'Refresh tokens success',
+      });
+    } else {
+      throw new UnauthorizedException();
+    }
   }
 }

@@ -10,13 +10,14 @@ import {
 } from '@nestjs/common';
 import {
   AuthService,
-  SignInDto,
-  SignUpDto,
   cookieAccessTokenName,
   cookieRefreshTokenName,
+  SignInDto,
+  SignUpDto,
+  UserFromJwt,
 } from '@yw/api/auth/data-access';
-import { AuthConfig, authConfiguration, Publish } from '@yw/api/shared';
-import { Request, Response } from 'express';
+import { AuthConfig, authConfiguration, CurrentUser, Publish } from '@yw/api/shared';
+import { Response } from 'express';
 import { GoogleOAuthGuard, JwtRefreshGuard } from './guards';
 
 @Controller('auth')
@@ -39,18 +40,11 @@ export class AuthController {
     return this.authService.defaultSignIn(res, data);
   }
 
+  @Publish()
   @Post('logout')
-  async logout(@Req() req: Request, @Res() res: Response) {
+  async logout(@Res() res: Response) {
     res.clearCookie(cookieAccessTokenName);
     res.clearCookie(cookieRefreshTokenName);
-    // req.logout(
-    //   {
-    //     keepSessionInfo: false,
-    //   },
-    //   (err) => {
-    //     return err;
-    //   }
-    // );
 
     return res.status(200).json({ message: 'Logged out successfully' });
   }
@@ -58,8 +52,8 @@ export class AuthController {
   @Publish()
   @UseGuards(JwtRefreshGuard)
   @Get('refresh-token')
-  refreshToken() {
-    return true;
+  refreshToken(@CurrentUser() user: UserFromJwt, @Res() res: Response) {
+    return this.authService.refreshToken(user, res);
   }
 
   @Publish()
@@ -80,5 +74,10 @@ export class AuthController {
     return res.redirect(
       `${this.authConfig.google.redirectClientUrl}?jwtUser=${encodedUser}`
     );
+  }
+
+  @Get('test')
+  async test(@CurrentUser() user: UserFromJwt) {
+    return user;
   }
 }
