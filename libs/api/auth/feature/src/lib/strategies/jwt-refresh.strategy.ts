@@ -8,7 +8,7 @@ import { TokenStrategy } from '../interfaces';
 @Injectable()
 export class JwtRefreshStrategy extends PassportStrategy(
   Strategy,
-  'jwt-refresh'
+  'refreshToken'
 ) {
   constructor(@Inject(authConfiguration.KEY) private authConfig: AuthConfig) {
     super({
@@ -16,7 +16,7 @@ export class JwtRefreshStrategy extends PassportStrategy(
         (req) => req?.cookies?.['refreshToken'] || null,
       ]),
       secretOrKey: authConfig.jwt.refreshSecretKey,
-      passReqToCallback: true,
+      // passReqToCallback: true, // error not get UserFromJwt
     });
   }
 
