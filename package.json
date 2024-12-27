@@ -2,7 +2,11 @@
   "name": "@yw/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start": "npm run start:fe && npm run start:be",
+    "start:fe": "nx serve yw",
+    "start:be": "nx serve yw-be"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~18.2.0",
