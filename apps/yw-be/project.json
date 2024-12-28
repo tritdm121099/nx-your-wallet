@@ -5,6 +5,20 @@
   "projectType": "application",
   "tags": [],
   "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "options": {
+        "webpackConfig": "apps/yw-be/webpack.config.js",
+        "main": "apps/yw-be/src/main.ts",
+        "tsConfig": "apps/yw-be/tsconfig.app.json",
+        "optimization": false,
+        "outputHashing": "none",
+        "sourceMap": true,
+        "outputPath": "dist/apps/yw-be/",
+        "compiler": "tsc",
+        "target": "node"
+      }
+    },
     "serve": {
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
