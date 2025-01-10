@@ -25,6 +25,7 @@ import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import {} from 'ng-zorro-antd';
 import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { provideAngularSvgIcon } from 'angular-svg-icon';
 
 registerLocaleData(en);
 
@@ -51,5 +52,6 @@ export const appConfig: ApplicationConfig = {
       message: { nzTop: 120 },
       notification: { nzTop: 240 },
     }),
+    provideAngularSvgIcon(),
   ],
 };
