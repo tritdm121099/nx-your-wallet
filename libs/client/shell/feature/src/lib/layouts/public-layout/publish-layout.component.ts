@@ -16,44 +16,7 @@ import { ThemesComponent } from '../../themes';
     ThemesComponent,
   ],
   standalone: true,
-  template: `
-    <nz-layout class="h-screen">
-      <nz-header>
-        <a
-          [routerLink]="['/']"
-          class="flex items-center float-left text-white text-xl h-full"
-          >Home Page</a
-        >
-        <div class="float-right flex">
-          <yw-themes></yw-themes>
-          <ul nz-menu [nzMode]="'horizontal'" [nzTheme]="'dark'">
-            <li
-              nz-menu-item
-              #rla1="routerLinkActive"
-              routerLinkActive
-              [nzSelected]="rla1.isActive"
-              [nzSelected]="rla1.isActive"
-            >
-              <a [routerLink]="['/login']">Sign In</a>
-            </li>
-            <li
-              nz-menu-item
-              #rla2="routerLinkActive"
-              routerLinkActive
-              [nzSelected]="rla2.isActive"
-              [nzSelected]="rla2.isActive"
-            >
-              <a routerLink="/sign-up">Sign Up</a>
-            </li>
-          </ul>
-        </div>
-      </nz-header>
-
-      <nz-content class="p-5">
-        <router-outlet></router-outlet>
-      </nz-content>
-    </nz-layout>
-  `,
+  templateUrl: './publish-layout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PublishLayoutComponent {
