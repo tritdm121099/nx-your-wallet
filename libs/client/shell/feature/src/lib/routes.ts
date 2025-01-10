@@ -4,7 +4,7 @@ import { authGuard, publishGuard } from '@yw/client/auth/data-access';
 export const webRoutes: Routes = [
   {
     path: '',
-    loadComponent: () => import('@yw/client/shell/ui/layout').then(m => m.PublishLayoutComponent),
+    loadComponent: () => import('./layouts/public-layout').then(m => m.PublishLayoutComponent),
     canMatch: [publishGuard],
     loadChildren: () => [
       {
@@ -36,7 +36,7 @@ export const webRoutes: Routes = [
   {
     path: '',
     canMatch: [authGuard],
-    loadComponent: () => import('@yw/client/shell/ui/layout').then(m => m.LayoutComponent),
+    loadComponent: () => import('./layouts/layout').then(m => m.LayoutComponent),
     canLoad: [authGuard],
     loadChildren: () => [
       {

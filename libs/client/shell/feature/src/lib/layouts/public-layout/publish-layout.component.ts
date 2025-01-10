@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '@yw/client/auth/data-access';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { ThemesComponent } from '../../themes';
 
 @Component({
   selector: 'yw-publish-layout',
@@ -12,6 +13,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
     NzLayoutModule,
     NzMenuModule,
     RouterLinkActive,
+    ThemesComponent,
   ],
   standalone: true,
   template: `
@@ -22,7 +24,8 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
           class="flex items-center float-left text-white text-xl h-full"
           >Home Page</a
         >
-        <div class="float-right">
+        <div class="float-right flex">
+          <yw-themes></yw-themes>
           <ul nz-menu [nzMode]="'horizontal'" [nzTheme]="'dark'">
             <li
               nz-menu-item
@@ -47,7 +50,6 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
       </nz-header>
 
       <nz-content class="p-5">
-        <button (click)="authService.refreshToken$().subscribe()">Test auth</button>
         <router-outlet></router-outlet>
       </nz-content>
     </nz-layout>

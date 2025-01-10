@@ -29,9 +29,6 @@
       ],
       "@yw/client/home/feature": ["libs/client/home/feature/src/index.ts"],
       "@yw/client/shell/feature": ["libs/client/shell/feature/src/index.ts"],
-      "@yw/client/shell/ui/layout": [
-        "libs/client/shell/ui/layout/src/index.ts"
-      ],
       "@yw/pg-prisma-client": ["libs/pg-prisma-client/src/index.ts"],
       "@yw/prisma-schema": ["libs/prisma-schema/src/index.ts"]
     }
