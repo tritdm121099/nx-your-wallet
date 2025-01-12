@@ -14,7 +14,7 @@ import { ThemeOption } from './themes.i';
       @if(service.isDarkTheme()) {
       <svg-icon name="moon" class="h-6 w-6" src="icons/moon.svg"></svg-icon>
       } @else {
-      <svg-icon name="sun" class="h-6 w-6" src="icons/sun.svg"></svg-icon>
+      <svg-icon name="sun" class="h-6 w-6 text-white" src="icons/sun.svg"></svg-icon>
       }
     </button>
     <nz-dropdown-menu #menu="nzDropdownMenu">
