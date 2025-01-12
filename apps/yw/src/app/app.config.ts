@@ -19,6 +19,7 @@ import { AuthService } from '@yw/client/auth/data-access';
 import {
   errorInterceptor,
   initializeApp,
+  ThemesService,
   webRoutes,
 } from '@yw/client/shell/feature';
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
@@ -46,7 +47,7 @@ export const appConfig: ApplicationConfig = {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
       multi: true,
-      deps: [AuthService],
+      deps: [AuthService, ThemesService],
     },
     provideNzConfig({
       message: { nzTop: 120 },

@@ -29,8 +29,20 @@
         ],
         "styles": [
           "apps/yw/src/styles.scss",
-          "node_modules/ng-zorro-antd/ng-zorro-antd.min.css"
+          {
+            "input": "apps/yw/src/styles/light.scss",
+            "bundleName": "light",
+            "inject": false
+          },
+          {
+            "input": "apps/yw/src/styles/dark.scss",
+            "bundleName": "dark",
+            "inject": false
+          }
         ],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/yw/src/styles/themes"]
+        },
         "scripts": []
       },
       "configurations": {

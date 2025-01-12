@@ -1,12 +1,14 @@
-import { computed, inject, Injectable, signal, Signal } from '@angular/core';
+import { computed, effect, inject, Injectable, signal, Signal } from '@angular/core';
 import { oLocalStorageService } from '../services/local-storage.service';
-import { Theme } from './themes.i';
+import { Theme, ThemeOption } from './themes.i';
+import { NZThemesService } from './nz-themes.service';
 
 @Injectable({ providedIn: 'root' })
 export class ThemesService {
   keyStorage = 'yw-theme';
 
   localStorage = inject(oLocalStorageService);
+  nzThemes = inject(NZThemesService);
 
   theme = signal(this.themeStorage);
   isDarkTheme: Signal<boolean> = computed(() => {
@@ -27,12 +29,21 @@ export class ThemesService {
       }
     }
   });
+  themeEffect = effect(() => {
+    const theme: Theme = this.isDarkTheme() ? 'dark' : 'light';
+    this.nzThemes.loadTheme(theme, false);
+  })
 
-  get themeStorage(): Theme {
-    return <Theme>this.localStorage.getItem(this.keyStorage) || 'system';
+  initTheme() {
+    const theme: Theme = this.isDarkTheme() ? 'dark' : 'light';
+    this.nzThemes.loadTheme(theme);
   }
 
-  changeTheme(change: Theme): void {
+  get themeStorage(): ThemeOption {
+    return <ThemeOption>this.localStorage.getItem(this.keyStorage) || 'system';
+  }
+
+  changeTheme(change: ThemeOption): void {
     this.localStorage.setItem(this.keyStorage, change);
     this.theme.set(change);
   }

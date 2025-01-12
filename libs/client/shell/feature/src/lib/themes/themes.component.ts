@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, ViewEncapsulation } from '@
 import { SvgIconComponent } from 'angular-svg-icon';
 import { ThemesService } from './themes.service';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { Theme } from './themes.i';
+import { ThemeOption } from './themes.i';
 
 @Component({
   selector: 'yw-themes',
@@ -41,7 +41,7 @@ import { Theme } from './themes.i';
 export class ThemesComponent {
   service = inject(ThemesService);
 
-  menus: { icon: string; text: string; id: Theme }[] = [
+  menus: { icon: string; text: string; id: ThemeOption }[] = [
     {
       icon: 'icons/moon.svg',
       text: 'Dark',
