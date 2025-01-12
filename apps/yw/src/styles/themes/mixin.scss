@@ -1,0 +1,12 @@
+@mixin themeMixin {
+  html {
+    &.light {
+      @import './light';
+      @content;
+    }
+    &.dark {
+      @import './dark';
+      @content;
+    }
+  }
+}

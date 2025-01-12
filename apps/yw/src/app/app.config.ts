@@ -19,12 +19,14 @@ import { AuthService } from '@yw/client/auth/data-access';
 import {
   errorInterceptor,
   initializeApp,
+  ThemesService,
   webRoutes,
 } from '@yw/client/shell/feature';
 import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
 import {} from 'ng-zorro-antd';
 import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { provideAngularSvgIcon } from 'angular-svg-icon';
 
 registerLocaleData(en);
 
@@ -45,11 +47,12 @@ export const appConfig: ApplicationConfig = {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
       multi: true,
-      deps: [AuthService],
+      deps: [AuthService, ThemesService],
     },
     provideNzConfig({
       message: { nzTop: 120 },
       notification: { nzTop: 240 },
     }),
+    provideAngularSvgIcon(),
   ],
 };

@@ -31,7 +31,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
   ],
   template: `
     <nz-card class="w-[500px] m-auto">
-      <h1 class="text-3xl font-bold mb-4">Sign In</h1>
+      <h1 class="text-3xl font-bold mb-4 text-black dark:text-white">Sign In</h1>
       <form
         nz-form
         [nzLayout]="'vertical'"
@@ -82,10 +82,10 @@ import { NzMessageService } from 'ng-zorro-antd/message';
           <a href="#" nz-button [nzType]="'link'" disabled>Forgot Password?</a>
         </div>
       </form>
-      <p class="mt-8 text-xs font-light text-center text-gray-400">
+      <p class="mt-8 text-xs font-light text-center text-gray-400 dark:text-gray-600">
         Don't have an account?
         <a
-          class="font-medium text-black hover:underline"
+          class="font-medium text-black dark:text-white hover:underline"
           [routerLink]="['/sign-up']"
           >Create One</a
         >
@@ -93,7 +93,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
       <div class="flex items-center justify-between my-4">
         <span class="w-1/5 border-b dark:border-gray-600 lg:w-1/5"></span>
-        <p class="text-xs text-center text-black hover:underline m-0">
+        <p class="text-xs text-center text-black dark:text-white hover:underline m-0">
           or login with Social Media
         </p>
         <span class="w-1/5 border-b dark:border-gray-400 lg:w-1/5"></span>

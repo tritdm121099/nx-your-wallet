@@ -1,0 +1,24 @@
+<nz-layout class="h-screen">
+  <nz-header>
+    <a
+      [routerLink]="['/']"
+      class="flex items-center float-left text-white text-xl h-full"
+      >Home Page</a
+    >
+    <div class="float-right flex items-center">
+      <div class="leading-normal flex items-center pr-2 mr-2">
+        <yw-themes ></yw-themes>
+      </div>
+      <div class="h-8 px-2 border-l border-slate-200 dark:border-slate-800"></div>
+      <ul nz-menu [nzMode]="'horizontal'" [nzTheme]="'dark'">
+        <li nz-menu-item>
+          <button (click)="logout()">Logout</button>
+        </li>
+      </ul>
+    </div>
+  </nz-header>
+
+  <nz-content class="p-5">
+    <router-outlet></router-outlet>
+  </nz-content>
+</nz-layout>
