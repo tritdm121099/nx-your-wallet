@@ -1,10 +1,10 @@
-import { registerLocaleData } from '@angular/common';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import en from '@angular/common/locales/en';
 import {
   APP_INITIALIZER,
   ApplicationConfig,
   importProvidersFrom,
+  inject,
+  LOCALE_ID,
   provideZoneChangeDetection,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -22,13 +22,20 @@ import {
   ThemesService,
   webRoutes,
 } from '@yw/client/shell/feature';
-import { en_US, provideNzI18n } from 'ng-zorro-antd/i18n';
-import {} from 'ng-zorro-antd';
+
 import { provideNzConfig } from 'ng-zorro-antd/core/config';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { provideAngularSvgIcon } from 'angular-svg-icon';
 
+/** config angular i18n **/
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+import vi from '@angular/common/locales/vi';
 registerLocaleData(en);
+registerLocaleData(vi);
+
+/** config ng-zorro-antd i18n **/
+import { en_US, vi_VN, NZ_I18N } from 'ng-zorro-antd/i18n';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,7 +46,6 @@ export const appConfig: ApplicationConfig = {
       withPreloading(PreloadAllModules),
       withDebugTracing()
     ),
-    provideNzI18n(en_US),
     importProvidersFrom(FormsModule),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([errorInterceptor])),
@@ -54,5 +60,19 @@ export const appConfig: ApplicationConfig = {
       notification: { nzTop: 240 },
     }),
     provideAngularSvgIcon(),
+    {
+      provide: NZ_I18N,
+      useFactory: () => {
+        const localId = inject(LOCALE_ID);
+        switch (localId) {
+          case 'en':
+            return en_US;
+          case 'vi':
+            return vi_VN;
+          default:
+            return en_US;
+        }
+      }
+    }
   ],
 };
