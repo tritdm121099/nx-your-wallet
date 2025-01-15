@@ -1,5 +1,5 @@
 import { computed, effect, inject, Injectable, signal, Signal } from '@angular/core';
-import { oLocalStorageService } from '../services/local-storage.service';
+import { LocalStorageService } from '../services/local-storage.service';
 import { Theme, ThemeOption } from './themes.i';
 import { NZThemesService } from './nz-themes.service';
 
@@ -7,7 +7,7 @@ import { NZThemesService } from './nz-themes.service';
 export class ThemesService {
   keyStorage = 'yw-theme';
 
-  localStorage = inject(oLocalStorageService);
+  localStorage = inject(LocalStorageService);
   nzThemes = inject(NZThemesService);
 
   theme = signal(this.themeStorage);
