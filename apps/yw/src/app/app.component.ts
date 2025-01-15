@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { LanguageService } from '@yw/client/shell/feature';
 
 @Component({
   standalone: true,
@@ -8,5 +9,7 @@ import { RouterOutlet } from '@angular/router';
   template: ` <router-outlet></router-outlet> `,
 })
 export class AppComponent {
-  title = 'yw';
+  constructor(language: LanguageService) {
+    language.translate.use(language.language);
+  }
 }

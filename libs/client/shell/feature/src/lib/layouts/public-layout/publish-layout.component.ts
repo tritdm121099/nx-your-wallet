@@ -4,6 +4,7 @@ import { AuthService } from '@yw/client/auth/data-access';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { ThemesComponent } from '../../themes';
+import { LanguageComponent } from '../../language';
 
 @Component({
   selector: 'yw-publish-layout',
@@ -14,6 +15,7 @@ import { ThemesComponent } from '../../themes';
     NzMenuModule,
     RouterLinkActive,
     ThemesComponent,
+    LanguageComponent,
   ],
   standalone: true,
   templateUrl: './publish-layout.component.html',

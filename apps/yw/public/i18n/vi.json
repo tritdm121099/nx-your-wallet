@@ -1,0 +1,10 @@
+{
+  "app": {
+    "login": "Đăng nhập",
+    "signUp": "Đăng ký",
+    "language": {
+      "en": "Tiếng Anh",
+      "vi": "Tiếng Việt"
+    }
+  }
+}

@@ -1,4 +1,8 @@
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
 import {
   APP_INITIALIZER,
   ApplicationConfig,
@@ -36,6 +40,12 @@ registerLocaleData(vi);
 
 /** config ng-zorro-antd i18n **/
 import { en_US, vi_VN, NZ_I18N } from 'ng-zorro-antd/i18n';
+import { provideTranslateService, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (
+  http: HttpClient
+) => new TranslateHttpLoader(http, '../i18n/', '.json');
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -72,7 +82,15 @@ export const appConfig: ApplicationConfig = {
           default:
             return en_US;
         }
-      }
-    }
+      },
+    },
+    provideHttpClient(),
+    provideTranslateService({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpLoaderFactory,
+        deps: [HttpClient],
+      },
+    }),
   ],
 };

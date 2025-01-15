@@ -1,0 +1,10 @@
+{
+  "app": {
+    "login": "Sign in",
+    "signUp": "Sign up",
+    "language": {
+      "en": "English",
+      "vi": "Vietnamese"
+    }
+  }
+}
