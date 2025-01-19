@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, LowerCasePipe } from '@angular/common';
 import {
   FormBuilder,
   Validators,
@@ -27,6 +27,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     NzCardModule,
     RouterLink,
     TranslatePipe,
+    LowerCasePipe,
   ],
   template: `
     <nz-card class="w-[500px] m-auto">
@@ -83,7 +84,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 
           <ng-template #passwordErrorsTpl let-control>
             @if (control.errors?.['minlength']) {
-            {{ text.forms.password.invalidMinLength | translate:{min: 8} }} } @if
+            {{ text.forms.password.invalidMinLength | translate:{min: 8, field: text.password | translate | lowercase} }} } @if
             (control.errors?.['required']) { 
               {{text.forms.requiredErrors | translate : { field: text.password | translate } }}  
             }
