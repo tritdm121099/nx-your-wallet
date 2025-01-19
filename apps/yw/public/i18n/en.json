@@ -1,0 +1,42 @@
+{
+  "common": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "logout":"Logout",
+    "homePage": "Home Page",
+    "languages": {
+      "en": "English",
+      "vi": "Vietnamese"
+    },
+    "notImplemented": "Not implemented yet",
+    "password": "Password"
+  },
+  "pages": {
+    "signIn": {
+      "forgotPassword": "Forgot Password?",
+      "notHaveAccount": "Don't have an account?",
+      "createOne": "Create One",
+      "loginWithSocialMedia": "or login with Social Media",
+      "loginWith": "Sign in with {{app}}"
+    },
+    "signUp": {
+      "createAccount": "Create your account",
+      "haveAccount": "Already have an account?",
+      "forms": {
+        "confirmPassword": {
+          "label": "Confirm Password",
+          "placeHolder": "Confirm your password"
+        },
+        "confirmPassNotMatch": "Confirm password does not match!",
+        "pleaseConfirmPass": "Please confirm your password!"
+      }
+    }
+  },
+  "forms": {
+    "errors": {
+      "minLength": "Min length {{field}} is {{min}}!",
+      "required": "{{field}} is required!",
+      "validPlease": "Please enter a valid {{field}}!"
+    }
+  }
+}

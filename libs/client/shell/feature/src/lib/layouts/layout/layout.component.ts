@@ -7,6 +7,8 @@ import { AuthService } from '@yw/client/auth/data-access';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { ThemesComponent } from '../../themes';
+import { LanguageComponent } from '../../language';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'yw-layout',
@@ -17,6 +19,8 @@ import { ThemesComponent } from '../../themes';
     NzLayoutModule,
     NzMenuModule,
     ThemesComponent,
+    LanguageComponent,
+    TranslatePipe,
   ],
   templateUrl: './layout.component.html',
   styles: `

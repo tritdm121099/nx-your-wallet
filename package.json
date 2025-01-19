@@ -23,6 +23,8 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.4.4",
+    "@ngx-translate/core": "^16.0.4",
+    "@ngx-translate/http-loader": "^16.0.1",
     "@prisma/client": "^5.19.1",
     "angular-svg-icon": "^18.0.2",
     "axios": "^1.6.0",

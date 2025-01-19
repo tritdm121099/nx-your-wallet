@@ -1,0 +1,42 @@
+{
+  "common": {
+    "signIn": "Đăng nhập",
+    "signUp": "Đăng ký",
+    "logout":"Đăng xuất",
+    "homePage": "Trang chủ",
+    "languages": {
+      "en": "Tiếng Anh",
+      "vi": "Tiếng Việt"
+    },
+    "notImplemented": "Chức năng chưa được triển khai",
+    "password": "Mật khẩu"
+  },
+  "pages": {
+    "signIn": {
+      "forgotPassword": "Quên mật khẩu?",
+      "notHaveAccount": "Chưa có tài khoản?",
+      "createOne": "Tạo một tài khoản",
+      "loginWithSocialMedia": "Đăng nhập bằng mạng xã hội",
+      "loginWith": "Đăng nhập bằng {{app}}"
+    },
+    "signUp": {
+      "createAccount": "Tạo tài khoản của bạn",
+      "haveAccount": "Đã có tài khoản?",
+      "forms": {
+        "confirmPassword": {
+          "label": "Xác nhận mật khẩu",
+          "placeHolder": "Xác nhận mật khẩu của bạn"
+        },
+        "confirmPassNotMatch": "Mật khẩu xác nhận không khớp!",
+        "pleaseConfirmPass": "Vui lòng xác nhận lại mật khẩu của bạn!"
+      }
+    }
+  },
+  "forms": {
+    "errors": {
+      "minLength": "Độ dài tối thiểu của {{field}} là {{min}} ký tự!",
+      "required": "{{field}} không được để trống!",
+      "validPlease": "Vui lòng nhập {{field}} phù hợp!"
+    }
+  }
+}
