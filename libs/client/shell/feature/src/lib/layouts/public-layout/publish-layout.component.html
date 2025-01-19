@@ -3,7 +3,7 @@
     <a
       [routerLink]="['/']"
       class="flex items-center float-left text-white text-xl h-full"
-      >Home Page</a
+      >{{text.homePage| translate}}</a
     >
     <div class="float-right flex items-center">
       <div class="leading-normal flex items-center mr-2">
@@ -19,7 +19,7 @@
           [nzSelected]="rla1.isActive"
           [nzSelected]="rla1.isActive"
         >
-          <a [routerLink]="['/login']">Sign In</a>
+          <a [routerLink]="['/login']">{{text.signIn | translate}}</a>
         </li>
         <li
           nz-menu-item
@@ -28,7 +28,7 @@
           [nzSelected]="rla2.isActive"
           [nzSelected]="rla2.isActive"
         >
-          <a routerLink="/sign-up">Sign Up</a>
+          <a routerLink="/sign-up">{{text.signUp | translate}}</a>
         </li>
       </ul>
     </div>

@@ -55,8 +55,8 @@ export class LanguageComponent {
   value: AppLanguage = this.service.language;
 
   options: LanguageOption[] = [
-    { value: 'en', label: 'app.language.en' },
-    { value: 'vi', label: 'app.language.vi' },
+    { value: 'en', label: 'common.languages.en' },
+    { value: 'vi', label: 'common.languages.vi' },
   ];
 
   changeLanguage() {
