@@ -9,7 +9,8 @@
       "vi": "Tiếng Việt"
     },
     "notImplemented": "Chức năng chưa được triển khai",
-    "password": "Mật khẩu"
+    "password": "Mật khẩu",
+    "dashboard": "Trang điều kiển"
   },
   "pages": {
     "signIn": {

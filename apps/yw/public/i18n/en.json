@@ -9,7 +9,8 @@
       "vi": "Vietnamese"
     },
     "notImplemented": "Not implemented yet",
-    "password": "Password"
+    "password": "Password",
+    "dashboard": "Dashboard"
   },
   "pages": {
     "signIn": {

@@ -9,6 +9,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { ThemesComponent } from '../../themes';
 import { LanguageComponent } from '../../language';
 import { TranslatePipe } from '@ngx-translate/core';
+import { SidebarComponent } from '../../components/sidebar/sidebar.component';
 
 @Component({
   selector: 'yw-layout',
@@ -21,6 +22,7 @@ import { TranslatePipe } from '@ngx-translate/core';
     ThemesComponent,
     LanguageComponent,
     TranslatePipe,
+    SidebarComponent,
   ],
   templateUrl: './layout.component.html',
   styles: `

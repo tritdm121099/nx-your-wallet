@@ -1,0 +1,20 @@
+:host {
+  display: block;
+  height: 100%;
+  width: 60px;
+
+  ::ng-deep {
+    [nz-menu].ant-menu-inline {
+      width: 230px;
+      position: fixed;
+    }
+
+    &.sidebar-push {
+      position: unset;
+    }
+  }
+
+  &:has(.sidebar-push) {
+    width: 230px;
+  }
+}

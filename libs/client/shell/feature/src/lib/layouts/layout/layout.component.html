@@ -18,8 +18,10 @@
       </ul>
     </div>
   </nz-header>
-
-  <nz-content class="p-5">
-    <router-outlet></router-outlet>
-  </nz-content>
+  <div class="flex h-full">
+    <yw-sidebar></yw-sidebar>
+    <nz-content class="p-5">
+      <router-outlet></router-outlet>
+    </nz-content>
+  </div>
 </nz-layout>
