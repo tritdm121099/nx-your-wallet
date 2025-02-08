@@ -39,5 +39,20 @@
       "required": "{{field}} is required!",
       "validPlease": "Please enter a valid {{field}}!"
     }
+  },
+  "http": {
+    "errors": {
+      "401": "Unauthorized",
+      "403": "Forbidden",
+      "404": "Not Found",
+      "500": {
+        "title": "Internal Server Error",
+        "message": "Something went wrong on the server! Please try again later."
+      },
+      "networkConnection": {
+        "title": "Network Connection",
+        "message": "Please check your network connection!"
+      }
+    }
   }
 }

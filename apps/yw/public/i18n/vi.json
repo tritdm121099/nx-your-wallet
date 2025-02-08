@@ -39,5 +39,20 @@
       "required": "{{field}} không được để trống!",
       "validPlease": "Vui lòng nhập {{field}} phù hợp!"
     }
+  },
+  "http": {
+    "errors": {
+      "401": "Không được ủy quyền",
+      "403": "Cấm",
+      "404": "Không tìm thấy",
+      "500": {
+        "title": "Lỗi máy chủ nội bộ",
+        "message": "Đã xảy ra lỗi trên máy chủ! Vui lòng thử lại sau."
+      },
+      "networkConnection": {
+        "title": "Kết nối mạng",
+        "message": "Vui lòng kiểm tra kết nối mạng của bạn!"
+      }
+    }
   }
 }

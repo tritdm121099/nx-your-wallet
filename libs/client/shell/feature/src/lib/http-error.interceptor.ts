@@ -4,6 +4,7 @@ import {
   HttpStatusCode,
 } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '@yw/client/auth/data-access';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { catchError, retry, switchMap, throwError } from 'rxjs';
@@ -22,6 +23,7 @@ function checkNoNetworkConnection(error: unknown): boolean {
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const modal = inject(NzModalService);
   const authService = inject(AuthService);
+  const translate = inject(TranslateService);
 
   return next(req).pipe(
     // can infinity retry
@@ -40,9 +42,11 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((err: HttpErrorResponse) => {
       if (checkNoNetworkConnection(err)) {
         modal.create({
-          nzTitle: 'No network',
-          nzContent: 'Please check your network',
+          nzTitle: translate.instant('http.errors.networkConnection.title'),
+          nzContent: translate.instant('http.errors.networkConnection.message'),
           nzClosable: false,
+          nzCancelText: null,
+          nzOkDanger: true,
         });
       } else {
         switch (err.status) {
@@ -62,6 +66,15 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                 })
               );
             }
+            break;
+          case HttpStatusCode.InternalServerError:
+            modal.create({
+              nzTitle: translate.instant('http.errors.500.title'),
+              nzContent: translate.instant('http.errors.500.message'),
+              nzClosable: false,
+              nzCancelText: null,
+              nzOkDanger: true,
+            });
             break;
           default:
             break;
