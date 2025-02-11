@@ -15,6 +15,7 @@ import { Response } from 'express';
 import { SignInDto, SignUpDto } from '../../dtos';
 import { GoogleUser, UserFromJwt } from '../../interfaces';
 import { TokenService } from '../token/token.service';
+import { LoginErrorCodes, RegisterErrorCodes } from '@yw/fe-be-interfaces';
 
 @Injectable()
 export class AuthService {
@@ -29,22 +30,22 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.userService.getUser({ where: { email } });
     if (!user) {
-      throw new BadRequestException('User not found');
+      throw new BadRequestException(LoginErrorCodes.AuthFailed);
     }
     if (user.password) {
       const isMatch: boolean = bcrypt.compareSync(password, user.password);
       if (!isMatch) {
-        throw new BadRequestException('Password does not match');
+        throw new BadRequestException(LoginErrorCodes.AuthFailed);
       }
     } else {
-      throw new BadRequestException('Have used other method to register!');
+      throw new BadRequestException(LoginErrorCodes.TryOtherMethod);
     }
     return user;
   }
 
   async signUp(res: Response, params: SignUpDto) {
     if (params.password !== params.confirm) {
-      throw new BadRequestException('Confirm password not match');
+      throw new BadRequestException(RegisterErrorCodes.ConfirmPassFail);
     }
 
     const existingUser = await this.userService.getUser({
@@ -54,7 +55,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new BadRequestException('User already exists');
+      throw new BadRequestException(RegisterErrorCodes.EmailHaveUsed);
     }
 
     const hashedPassword = await bcrypt.hash(
@@ -91,7 +92,7 @@ export class AuthService {
   ): Promise<{
     encodedUser: string;
   }> {
-    if (!user) throw new BadRequestException('Unauthenticated');
+    if (!user) throw new BadRequestException(LoginErrorCodes.AuthFailed);
 
     const existingUser = await this.userService.getUser({
       where: { email: user.email },
