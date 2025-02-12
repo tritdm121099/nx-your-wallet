@@ -29,7 +29,16 @@
           "placeHolder": "Confirm your password"
         },
         "confirmPassNotMatch": "Confirm password does not match!",
-        "pleaseConfirmPass": "Please confirm your password!"
+        "pleaseConfirmPass": "Please confirm your password!",
+        "name": {
+          "label": "Display Name",
+          "placeHolder": "Chose a display name"
+        },
+        "email": {
+          "errors": {
+            "haveRegistered": "This email has been registered!"
+          }
+        }
       }
     }
   },

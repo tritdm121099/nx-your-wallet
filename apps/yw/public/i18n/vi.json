@@ -29,7 +29,16 @@
           "placeHolder": "Xác nhận mật khẩu của bạn"
         },
         "confirmPassNotMatch": "Mật khẩu xác nhận không khớp!",
-        "pleaseConfirmPass": "Vui lòng xác nhận lại mật khẩu của bạn!"
+        "pleaseConfirmPass": "Vui lòng xác nhận lại mật khẩu của bạn!",
+        "name": {
+          "label": "Tên hiển thị",
+          "placeHolder": "Chọn một tên hiển thị"
+        },
+        "email": {
+          "errors": {
+            "haveRegistered": "Email này đã được đăng ký!"
+          }
+        }
       }
     }
   },

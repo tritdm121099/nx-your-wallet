@@ -14,6 +14,10 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { AuthService } from '@yw/client/auth/data-access';
+import { HttpErrorResponse } from '@angular/common/http';
+import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
+import { LoadingService } from '@yw/client/shell/feature';
 
 @Component({
   selector: 'yw-sign-up',
@@ -41,6 +45,31 @@ import { TranslatePipe } from '@ngx-translate/core';
         (ngSubmit)="onSubmit()"
       >
         <nz-form-item>
+          <nz-form-label nzRequired>{{
+            text.forms.name.label | translate
+          }}</nz-form-label>
+          <nz-form-control [nzErrorTip]="nameErrorTpl">
+            <nz-input-group nzPrefixIcon="user">
+              <input
+                type="text"
+                nz-input
+                formControlName="name"
+                [placeholder]="text.forms.name.placeHolder | translate"
+                required
+              />
+            </nz-input-group>
+          </nz-form-control>
+
+          <ng-template #nameErrorTpl let-control>
+            @if (control.errors?.['required']) {
+            {{
+              text.forms.requiredErrors
+                | translate : { field: text.forms.name.label | translate }
+            }}
+            }
+          </ng-template>
+        </nz-form-item>
+        <nz-form-item>
           <nz-form-label nzRequired>E-mail</nz-form-label>
           <nz-form-control [nzErrorTip]="emailErrorTpl">
             <nz-input-group nzPrefixIcon="mail">
@@ -62,6 +91,8 @@ import { TranslatePipe } from '@ngx-translate/core';
             }}
             } @if (control.errors?.['required']) {
             {{ text.forms.requiredErrors | translate : { field: 'Email' } }}
+            } @if (control.errors?.['haveRegistered']) {
+            {{ text.forms.email.invalid.emailHaveUsed | translate }}
             }
           </ng-template>
         </nz-form-item>
@@ -84,9 +115,16 @@ import { TranslatePipe } from '@ngx-translate/core';
 
           <ng-template #passwordErrorsTpl let-control>
             @if (control.errors?.['minlength']) {
-            {{ text.forms.password.invalidMinLength | translate:{min: 8, field: text.password | translate | lowercase} }} } @if
-            (control.errors?.['required']) { 
-              {{text.forms.requiredErrors | translate : { field: text.password | translate } }}  
+            {{
+              text.forms.password.invalidMinLength
+                | translate
+                  : { min: 8, field: text.password | translate | lowercase }
+            }}
+            } @if (control.errors?.['required']) {
+            {{
+              text.forms.requiredErrors
+                | translate : { field: text.password | translate }
+            }}
             }
           </ng-template>
         </nz-form-item>
@@ -119,9 +157,13 @@ import { TranslatePipe } from '@ngx-translate/core';
           {{ text.signUp | translate }}
         </button>
       </form>
-      <a class="w-full" nz-button [nzType]="'link'" [routerLink]="'/login'">{{
-        text.haveAccount | translate
-      }}</a>
+      <a
+        class="w-full mt-1"
+        nz-button
+        [nzType]="'link'"
+        [routerLink]="'/login'"
+        >{{ text.haveAccount | translate }}</a
+      >
     </nz-card>
   `,
   styles: `
@@ -150,17 +192,26 @@ export class SignUpComponent {
       email: {
         invalid: {
           invalidEmail: 'forms.errors.validPlease',
+          emailHaveUsed: 'pages.signUp.forms.email.errors.haveRegistered',
         },
       },
       password: {
         invalidMinLength: 'forms.errors.minLength',
         requiredErrors: 'forms.errors.required',
       },
+      name: {
+        label: 'pages.signUp.forms.name.label',
+        placeHolder: 'pages.signUp.forms.name.placeHolder',
+      },
     },
   };
 
   fb = inject(FormBuilder);
   nzMsg = inject(NzMessageService);
+  auth = inject(AuthService);
+  loadingService = inject(LoadingService);
+
+  emailsHaveUsed: string[] = [];
 
   confirmValidator: ValidatorFn = (control: AbstractControl) => {
     if (
@@ -172,17 +223,47 @@ export class SignUpComponent {
     return null;
   };
 
-  signUpForm = this.fb.group({
-    email: ['', [Validators.email]],
+  haveRegisteredValidator: ValidatorFn = (control: AbstractControl) => {
+    if (control.dirty && control.value && this.emailsHaveUsed.length) {
+      const email: string = control.value.trim();
+      if (this.emailsHaveUsed.includes(email)) {
+        return { haveRegistered: true };
+      }
+    }
+
+    return null;
+  };
+
+  signUpForm = this.fb.nonNullable.group({
+    name: [''],
+    email: ['', [Validators.email, this.haveRegisteredValidator]],
     password: [''],
     confirm: ['', [this.confirmValidator]],
   });
 
   onSubmit() {
-    this.nzMsg.success('Login successful!'); // Example message
     if (this.signUpForm.valid) {
       // Handle successful login here
-      console.log(this.signUpForm.value);
+      const value = this.signUpForm.getRawValue();
+      this.loadingService.show();
+      this.auth.signUp$(value).subscribe({
+        error: (httpErr: HttpErrorResponse) => {
+          const err = httpErr.error as HttpError;
+          const errCode = err.message;
+
+          switch (errCode) {
+            case RegisterErrorCodes.EmailHaveUsed:
+              this.emailsHaveUsed.push(value.email.trim());
+              this.signUpForm.controls.email.updateValueAndValidity();
+              break;
+          }
+
+          this.loadingService.hide();
+        },
+        complete: () => {
+          this.loadingService.hide();
+        },
+      });
     } else {
       Object.values(this.signUpForm.controls).forEach((control) => {
         if (control.invalid) {
