@@ -1,3 +1,3 @@
 import { HttpException } from "@nestjs/common";
 
-export type HttpError = Error;
+export type HttpError = HttpException;
