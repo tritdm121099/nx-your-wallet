@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LanguageService } from '@yw/client/shell/feature';
+import { LanguageService, LoadingComponent } from '@yw/client/shell/feature';
 
 @Component({
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, LoadingComponent],
   selector: 'yw-root',
-  template: ` <router-outlet></router-outlet> `,
+  template: `
+    <yw-loading></yw-loading> 
+    <router-outlet></router-outlet> 
+  `,
 })
 export class AppComponent {
   constructor(language: LanguageService) {
