@@ -23,9 +23,9 @@ export class AuthService {
       .pipe(map(() => this.signInSuccess()));
   }
 
-  signUp$() {
+  signUp$(payload: SignInDto) {
     return this.http
-      .post('/api/auth/sign-up', {})
+      .post('/api/auth/sign-up', payload)
       .pipe(map(() => this.signInSuccess()));
   }
 
