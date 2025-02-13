@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { SignInDto } from '@yw/api/auth/data-access';
 import { map } from 'rxjs';
+import { SignInDto } from '@yw/fe-be-interfaces';
 
 @Injectable({
   providedIn: 'root',

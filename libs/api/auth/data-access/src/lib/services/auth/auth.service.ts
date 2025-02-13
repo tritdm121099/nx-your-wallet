@@ -10,12 +10,11 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '@prisma/pg-prisma-clients';
 import { AuthConfig, authConfiguration } from '@yw/api/shared';
 import { UserService } from '@yw/api/user/data-access';
+import { LoginErrorCodes, RegisterErrorCodes, SignInDto, SignUpDto } from '@yw/fe-be-interfaces';
 import * as bcrypt from 'bcrypt';
 import { Response } from 'express';
-import { SignInDto, SignUpDto } from '../../dtos';
 import { GoogleUser, UserFromJwt } from '../../interfaces';
 import { TokenService } from '../token/token.service';
-import { LoginErrorCodes, RegisterErrorCodes } from '@yw/fe-be-interfaces';
 
 @Injectable()
 export class AuthService {

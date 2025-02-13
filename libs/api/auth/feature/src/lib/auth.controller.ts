@@ -12,13 +12,12 @@ import {
   AuthService,
   cookieAccessTokenName,
   cookieRefreshTokenName,
-  SignInDto,
-  SignUpDto,
   UserFromJwt,
 } from '@yw/api/auth/data-access';
 import { AuthConfig, authConfiguration, CurrentUser, Publish } from '@yw/api/shared';
 import { Response } from 'express';
 import { GoogleOAuthGuard, JwtRefreshGuard } from './guards';
+import { SignUpDto, SignInDto } from '@yw/fe-be-interfaces';
 
 @Controller('auth')
 export class AuthController {
@@ -76,7 +75,7 @@ export class AuthController {
     );
   }
 
-  @Get('test')
+  @Post('test')
   async test(@CurrentUser() user: UserFromJwt) {
     return user;
   }
