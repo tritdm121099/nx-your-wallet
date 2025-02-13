@@ -5,7 +5,8 @@
   "scripts": {
     "start": "npm run start:fe && npm run start:be",
     "start:fe": "nx serve yw",
-    "start:be": "nx serve yw-be"
+    "start:be": "nx serve yw-be",
+    "prisma-type": "nx run prisma-schema:generate-types"
   },
   "private": true,
   "dependencies": {
