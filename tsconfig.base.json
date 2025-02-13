@@ -20,6 +20,10 @@
       "@yw/api/shared": ["libs/api/shared/src/index.ts"],
       "@yw/api/user/data-access": ["libs/api/user/data-access/src/index.ts"],
       "@yw/api/user/feature": ["libs/api/user/feature/src/index.ts"],
+      "@yw/api/wallet": ["libs/api/wallet/src/index.ts"],
+      "@yw/client/shell-data-access": [
+        "libs/client/shell/data-access/src/index.ts"
+      ],
       "@yw/client/auth/data-access": [
         "libs/client/auth/data-access/src/index.ts"
       ],
@@ -29,6 +33,7 @@
       ],
       "@yw/client/home/feature": ["libs/client/home/feature/src/index.ts"],
       "@yw/client/shell/feature": ["libs/client/shell/feature/src/index.ts"],
+      "@yw/fe-be-interfaces": ["libs/fe-be/interfaces/src/index.ts"],
       "@yw/pg-prisma-client": ["libs/pg-prisma-client/src/index.ts"],
       "@yw/prisma-schema": ["libs/prisma-schema/src/index.ts"]
     }
