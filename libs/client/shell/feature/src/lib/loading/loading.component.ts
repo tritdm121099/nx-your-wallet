@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { LoadingService } from './loading.service';
 import { CommonModule } from '@angular/common';
+import { LoadingService } from '@yw/client/shell/data-access';
 
 @Component({
   selector: 'yw-loading',

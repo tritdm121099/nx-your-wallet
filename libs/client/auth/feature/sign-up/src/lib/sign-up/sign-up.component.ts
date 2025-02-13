@@ -17,7 +17,6 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '@yw/client/auth/data-access';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
-import { LoadingService } from '@yw/client/shell/feature';
 
 @Component({
   selector: 'yw-sign-up',
@@ -209,7 +208,6 @@ export class SignUpComponent {
   fb = inject(FormBuilder);
   nzMsg = inject(NzMessageService);
   auth = inject(AuthService);
-  loadingService = inject(LoadingService);
 
   emailsHaveUsed: string[] = [];
 
@@ -245,7 +243,6 @@ export class SignUpComponent {
     if (this.signUpForm.valid) {
       // Handle successful login here
       const value = this.signUpForm.getRawValue();
-      this.loadingService.show();
       this.auth.signUp$(value).subscribe({
         error: (httpErr: HttpErrorResponse) => {
           const err = httpErr.error as HttpError;
@@ -257,11 +254,6 @@ export class SignUpComponent {
               this.signUpForm.controls.email.updateValueAndValidity();
               break;
           }
-
-          this.loadingService.hide();
-        },
-        complete: () => {
-          this.loadingService.hide();
         },
       });
     } else {

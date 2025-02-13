@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { map } from 'rxjs';
 import { SignInDto } from '@yw/fe-be-interfaces';
+import { finalize, map } from 'rxjs';
+import { LoadingService } from '@yw/client/shell/data-access';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ import { SignInDto } from '@yw/fe-be-interfaces';
 export class AuthService {
   http = inject(HttpClient);
   router = inject(Router);
+  loading = inject(LoadingService);
 
   get isAuthenticated() {
     return !!document.cookie
@@ -18,21 +20,27 @@ export class AuthService {
   }
 
   signIn$(payload: SignInDto) {
-    return this.http
-      .post<SignInDto>('/api/auth/sign-in', payload)
-      .pipe(map(() => this.signInSuccess()));
+    this.loading.show();
+    return this.http.post<SignInDto>('/api/auth/sign-in', payload).pipe(
+      map(() => this.signInSuccess()),
+      finalize(() => this.loading.hide())
+    );
   }
 
   signUp$(payload: SignInDto) {
-    return this.http
-      .post('/api/auth/sign-up', payload)
-      .pipe(map(() => this.signInSuccess()));
+    this.loading.show();
+    return this.http.post('/api/auth/sign-up', payload).pipe(
+      map(() => this.signInSuccess()),
+      finalize(() => this.loading.hide())
+    );
   }
 
   logout$() {
-    return this.http
-      .post('/api/auth/logout', {})
-      .pipe(map(() => this.logoutSuccess()));
+    this.loading.show();
+    return this.http.post('/api/auth/logout', {}).pipe(
+      map(() => this.logoutSuccess()),
+      finalize(() => this.loading.hide())
+    );
   }
 
   refreshToken$() {
@@ -44,7 +52,7 @@ export class AuthService {
   }
 
   logoutSuccess() {
-    this.router.navigate(['/'], {onSameUrlNavigation: 'reload'});
+    this.router.navigate(['/'], { onSameUrlNavigation: 'reload' });
   }
 
   goLoginPage() {
