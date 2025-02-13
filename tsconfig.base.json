@@ -21,7 +21,7 @@
       "@yw/api/user/data-access": ["libs/api/user/data-access/src/index.ts"],
       "@yw/api/user/feature": ["libs/api/user/feature/src/index.ts"],
       "@yw/api/wallet": ["libs/api/wallet/src/index.ts"],
-      "@yw/client/shell-data-access": [
+      "@yw/client/shell/data-access": [
         "libs/client/shell/data-access/src/index.ts"
       ],
       "@yw/client/auth/data-access": [
