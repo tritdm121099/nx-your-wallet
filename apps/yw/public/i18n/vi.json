@@ -18,7 +18,12 @@
       "notHaveAccount": "Chưa có tài khoản?",
       "createOne": "Tạo một tài khoản",
       "loginWithSocialMedia": "Đăng nhập bằng mạng xã hội",
-      "loginWith": "Đăng nhập bằng {{app}}"
+      "loginWith": "Đăng nhập bằng {{app}}",
+      "forms": {
+        "errors": {
+          "emailOrPasswordIncorrect": "Email hoặc mật khẩu không chính xác!"
+        }
+      }
     },
     "signUp": {
       "createAccount": "Tạo tài khoản của bạn",

@@ -19,6 +19,11 @@ export const translateTextKeys = {
       createOne: 'pages.signIn.createOne',
       loginWithSocialMedia: 'pages.signIn.loginWithSocialMedia',
       loginWith: 'pages.signIn.loginWith',
+      forms: {
+        errors: {
+          emailOrPasswordIncorrect: "pages.signIn.forms.errors.emailOrPasswordIncorrect",
+        }
+      }
     },
     signUp: {
       createAccount: 'pages.signUp.createAccount',

@@ -1,15 +1,25 @@
 import { CommonModule, LowerCasePipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import {
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  inject,
+} from '@angular/core';
+import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '@yw/client/auth/data-access';
+import { translateTextKeys } from '@yw/client/shell/data-access';
+import { HttpError, LoginErrorCodes } from '@yw/fe-be-interfaces';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzFormModule } from 'ng-zorro-antd/form';
@@ -17,6 +27,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { skip, take } from 'rxjs';
 
 @Component({
   selector: 'yw-login',
@@ -37,7 +48,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
   template: `
     <nz-card class="w-[500px] m-auto">
       <h1 class="text-3xl font-bold mb-4 text-black dark:text-white">
-        {{ text.signIn | translate }}
+        {{ texts.common.signIn| translate }}
       </h1>
       <form
         nz-form
@@ -70,12 +81,17 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
               text.loginForm.requiredErrors
                 | translate : { field: 'Email' | translate }
             }}
+            } @if (control.errors?.['needUpdate']) {
+            {{
+              texts.pages.signIn.forms.errors.emailOrPasswordIncorrect
+                | translate
+            }}
             }
           </ng-template>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label [nzSpan]="7" nzRequired>{{
-            text.password | translate
+            texts.common.password | translate
           }}</nz-form-label>
           <nz-form-control [nzErrorTip]="passwordErrorsTpl">
             <nz-input-group nzPrefixIcon="lock">
@@ -83,7 +99,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
                 type="password"
                 nz-input
                 formControlName="password"
-                placeholder="{{ text.password | translate }}"
+                placeholder="{{ texts.common.password | translate }}"
                 required
                 minlength="8"
               />
@@ -95,19 +111,24 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
             {{
               text.loginForm.password.invalid.minLength
                 | translate
-                  : { field: text.password | translate | lowercase, min: 8 }
+                  : { field: texts.common.password | translate | lowercase, min: 8 }
             }}
             } @if (control.errors?.['required']) {
             {{
               text.loginForm.requiredErrors
-                | translate : { field: text.password | translate }
+                | translate : { field: texts.common.password | translate }
+            }}
+            } @if (control.errors?.['needUpdate']) {
+            {{
+              texts.pages.signIn.forms.errors.emailOrPasswordIncorrect
+                | translate
             }}
             }
           </ng-template>
         </nz-form-item>
         <div class="flex items-center justify-between">
           <button nz-button nzType="primary" type="submit">
-            {{ text.signIn | translate }}
+            {{ texts.common.signIn| translate }}
           </button>
           <a
             href="#"
@@ -145,7 +166,7 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
         nz-button
         nzType="default"
         class="!flex w-full items-center justify-center"
-        (click)="loginGoogle()"
+        (click)="authService.loginGoogle()"
       >
         <span nz-icon nzType="google" nzTheme="outline"></span>
         <span class="font-bold text-center px-4">{{
@@ -165,9 +186,6 @@ import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 })
 export class LoginComponent {
   text = {
-    signIn: 'common.signIn',
-    email: 'common.email',
-    password: 'common.password',
     forgotPassword: 'pages.signIn.forgotPassword',
     notHaveAccount: 'pages.signIn.notHaveAccount',
     createOne: 'pages.signIn.createOne',
@@ -188,26 +206,58 @@ export class LoginComponent {
       },
     },
   };
+  texts = translateTextKeys;
+
+  needUpdate = false;
 
   fb = inject(FormBuilder);
   nzMsg = inject(NzMessageService);
   authService = inject(AuthService);
+  destroyRef = inject(DestroyRef);
+  changeDetectorRef = inject(ChangeDetectorRef);
+
+  needUpdateValidator: ValidatorFn = (control: AbstractControl) => {
+    if (this.needUpdate) {
+      return { needUpdate: true };
+    }
+    return null;
+  };
 
   loginForm: FormGroup<{
     email: FormControl<string>;
     password: FormControl<string>;
-  }> = this.fb.nonNullable.group({
-    email: ['', [Validators.email]],
-    password: [''],
-  });
+  }> = this.fb.nonNullable.group(
+    {
+      email: ['', [Validators.email, this.needUpdateValidator]],
+      password: ['', [this.needUpdateValidator]],
+    },
+  );
 
   onSubmit() {
     if (this.loginForm.valid) {
       const payload = this.loginForm.getRawValue();
       this.authService.signIn$(payload).subscribe({
-        next: () => {},
-        error: () => {
-          return true;
+        error: (httpErr: HttpErrorResponse) => {
+          const err = httpErr.error as HttpError;
+          const errCode = err.message;
+
+          switch (errCode) {
+            case LoginErrorCodes.AuthFailed:
+              this.needUpdate = true;
+              this.loginForm.controls.email.updateValueAndValidity();
+              this.loginForm.controls.password.updateValueAndValidity();
+              this.loginForm.valueChanges.pipe(take(1)).subscribe(() => {
+                this.needUpdate = false;
+                this.loginForm.controls.email.updateValueAndValidity();
+                this.loginForm.controls.password.updateValueAndValidity();
+              });
+              break;
+            case LoginErrorCodes.TryOtherMethod:
+              this.nzMsg.error(
+                "You can't login with this method, please try another one!"
+              );
+              break;
+          }
         },
       });
     } else {
@@ -218,9 +268,5 @@ export class LoginComponent {
         }
       });
     }
-  }
-
-  loginGoogle() {
-    window.location.href = `http://localhost:3000/api/auth/google`;
   }
 }

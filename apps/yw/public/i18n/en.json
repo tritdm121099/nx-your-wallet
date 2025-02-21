@@ -18,7 +18,12 @@
       "notHaveAccount": "Don't have an account?",
       "createOne": "Create One",
       "loginWithSocialMedia": "or login with Social Media",
-      "loginWith": "Sign in with {{app}}"
+      "loginWith": "Sign in with {{app}}",
+      "forms": {
+        "errors": {
+          "emailOrPasswordIncorrect": "Email or Password is incorrect!"
+        }
+      }
     },
     "signUp": {
       "createAccount": "Create your account",
