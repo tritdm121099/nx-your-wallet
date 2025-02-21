@@ -58,4 +58,8 @@ export class AuthService {
   goLoginPage() {
     this.router.navigate(['/login']);
   }
+
+  loginGoogle() {
+    window.location.href = `/api/auth/google`;
+  }
 }
