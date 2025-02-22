@@ -17,6 +17,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '@yw/client/auth/data-access';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
+import {
+  translateTextKeys,
+} from '@yw/client/shell/data-access';
 
 @Component({
   selector: 'yw-sign-up',
@@ -35,7 +38,7 @@ import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
   template: `
     <nz-card class="w-[500px] m-auto">
       <h1 class="text-3xl font-bold mb-4">
-        {{ text.createAccount | translate }}
+        {{ texts.pages.signUp.createAccount | translate }}
       </h1>
       <form
         nz-form
@@ -45,7 +48,7 @@ import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
       >
         <nz-form-item>
           <nz-form-label nzRequired>{{
-            text.forms.name.label | translate
+            textsPage.forms.name.label | translate
           }}</nz-form-label>
           <nz-form-control [nzErrorTip]="nameErrorTpl">
             <nz-input-group nzPrefixIcon="user">
@@ -53,7 +56,7 @@ import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
                 type="text"
                 nz-input
                 formControlName="name"
-                [placeholder]="text.forms.name.placeHolder | translate"
+                [placeholder]="textsPage.forms.name.placeHolder | translate"
                 required
               />
             </nz-input-group>
@@ -62,8 +65,8 @@ import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
           <ng-template #nameErrorTpl let-control>
             @if (control.errors?.['required']) {
             {{
-              text.forms.requiredErrors
-                | translate : { field: text.forms.name.label | translate }
+              textsForm.errors.required
+                | translate : { field: textsPage.forms.name.label | translate }
             }}
             }
           </ng-template>
@@ -85,19 +88,19 @@ import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
           <ng-template #emailErrorTpl let-control>
             @if (control.errors?.['email']) {
             {{
-              text.forms.email.invalid.invalidEmail
+              textsForm.errors.validPlease
                 | translate : { field: 'Email' }
             }}
             } @if (control.errors?.['required']) {
-            {{ text.forms.requiredErrors | translate : { field: 'Email' } }}
+            {{ textsForm.errors.required | translate : { field: 'Email' } }}
             } @if (control.errors?.['haveRegistered']) {
-            {{ text.forms.email.invalid.emailHaveUsed | translate }}
+            {{ textsPage.forms.email.errors.haveRegistered | translate }}
             }
           </ng-template>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label nzRequired>{{
-            text.password | translate
+            texts.common.password | translate
           }}</nz-form-label>
           <nz-form-control [nzErrorTip]="passwordErrorsTpl">
             <nz-input-group nzPrefixIcon="lock">
@@ -105,7 +108,7 @@ import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
                 type="password"
                 nz-input
                 formControlName="password"
-                placeholder="{{ text.password | translate }}"
+                placeholder="{{ texts.common.password | translate }}"
                 required
                 minlength="8"
               />
@@ -115,21 +118,21 @@ import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
           <ng-template #passwordErrorsTpl let-control>
             @if (control.errors?.['minlength']) {
             {{
-              text.forms.password.invalidMinLength
+              textsForm.errors.minLength
                 | translate
-                  : { min: 8, field: text.password | translate | lowercase }
+                  : { min: 8, field: texts.common.password | translate | lowercase }
             }}
             } @if (control.errors?.['required']) {
             {{
-              text.forms.requiredErrors
-                | translate : { field: text.password | translate }
+              textsForm.errors.required
+                | translate : { field: texts.common.password | translate }
             }}
             }
           </ng-template>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label nzRequired>{{
-            text.confirmPassword.label | translate
+            textsPage.forms.confirmPassword.label | translate
           }}</nz-form-label>
           <nz-form-control [nzErrorTip]="confirmPassErrorsTpl">
             <nz-input-group nzPrefixIcon="lock">
@@ -137,7 +140,7 @@ import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
                 type="password"
                 nz-input
                 formControlName="confirm"
-                placeholder="{{ text.confirmPassword.placeHolder | translate }}"
+                placeholder="{{ textsPage.forms.confirmPassword.placeHolder | translate }}"
                 required
               />
             </nz-input-group>
@@ -145,15 +148,15 @@ import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
 
           <ng-template #confirmPassErrorsTpl let-control>
             @if (control.errors?.['required']) {
-            {{ text.confirmPassword.pleaseConfirmPass | translate }}
+            {{ textsPage.forms.pleaseConfirmPass | translate }}
             } @if (control.errors?.['confirm']) {
-            {{ text.confirmPassword.confirmNotMatch | translate }}
+            {{ textsPage.forms.confirmPassNotMatch | translate }}
             }
           </ng-template>
         </nz-form-item>
 
         <button nz-button nzType="primary" type="submit" class="w-full">
-          {{ text.signUp | translate }}
+          {{ texts.common.signUp | translate }}
         </button>
       </form>
       <a
@@ -161,7 +164,7 @@ import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
         nz-button
         [nzType]="'link'"
         [routerLink]="'/login'"
-        >{{ text.haveAccount | translate }}</a
+        >{{ textsPage.haveAccount | translate }}</a
       >
     </nz-card>
   `,
@@ -175,35 +178,9 @@ import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
   `,
 })
 export class SignUpComponent {
-  text = {
-    signUp: 'common.signUp',
-    createAccount: 'pages.signUp.createAccount',
-    password: 'common.password',
-    confirmPassword: {
-      label: 'pages.signUp.forms.confirmPassword.label',
-      placeHolder: 'pages.signUp.forms.confirmPassword.placeHolder',
-      confirmNotMatch: 'pages.signUp.forms.confirmPassNotMatch',
-      pleaseConfirmPass: 'pages.signUp.forms.pleaseConfirmPass',
-    },
-    haveAccount: 'pages.signUp.haveAccount',
-    forms: {
-      requiredErrors: 'forms.errors.required',
-      email: {
-        invalid: {
-          invalidEmail: 'forms.errors.validPlease',
-          emailHaveUsed: 'pages.signUp.forms.email.errors.haveRegistered',
-        },
-      },
-      password: {
-        invalidMinLength: 'forms.errors.minLength',
-        requiredErrors: 'forms.errors.required',
-      },
-      name: {
-        label: 'pages.signUp.forms.name.label',
-        placeHolder: 'pages.signUp.forms.name.placeHolder',
-      },
-    },
-  };
+  texts = translateTextKeys;
+  textsPage = translateTextKeys.pages.signUp;
+  textsForm = translateTextKeys.forms;
 
   fb = inject(FormBuilder);
   nzMsg = inject(NzMessageService);
