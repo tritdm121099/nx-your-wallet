@@ -11,7 +11,15 @@ export const authConfiguration = registerAs('auth', () => ({
       return this.refreshExpiresTime.toString() + 's';
     },
     secretKey: process.env['JWT_SECRET'] || 'jwt_secret',
-    refreshSecretKey: process.env['JWT_REFRESH_SECRET'] || 'jwt_refresh_secret'
+    refreshSecretKey: process.env['JWT_REFRESH_SECRET'] || 'jwt_refresh_secret',
+    resetPassword: {
+      secretKey:
+        process.env['JWT_RESET_PASSWORD_SECRET'] || 'jwt_reset_password_secret',
+      expiresTime: 5 * 60 * 1000,
+      get expiresTimeString() {
+        return this.expiresTime.toString() + 's';
+      },
+    },
   },
   google: {
     clientId: process.env['GOOGLE_CLIENT_ID'],
