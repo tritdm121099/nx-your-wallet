@@ -48,7 +48,7 @@ import { skip, take } from 'rxjs';
   template: `
     <nz-card class="w-[500px] m-auto">
       <h1 class="text-3xl font-bold mb-4 text-black dark:text-white">
-        {{ texts.common.signIn| translate }}
+        {{ texts.common.signIn | translate }}
       </h1>
       <form
         nz-form
@@ -111,7 +111,10 @@ import { skip, take } from 'rxjs';
             {{
               text.loginForm.password.invalid.minLength
                 | translate
-                  : { field: texts.common.password | translate | lowercase, min: 8 }
+                  : {
+                      field: texts.common.password | translate | lowercase,
+                      min: 8
+                    }
             }}
             } @if (control.errors?.['required']) {
             {{
@@ -128,7 +131,7 @@ import { skip, take } from 'rxjs';
         </nz-form-item>
         <div class="flex items-center justify-between">
           <button nz-button nzType="primary" type="submit">
-            {{ texts.common.signIn| translate }}
+            {{ texts.common.signIn | translate }}
           </button>
           <a
             href="#"
@@ -226,12 +229,10 @@ export class LoginComponent {
   loginForm: FormGroup<{
     email: FormControl<string>;
     password: FormControl<string>;
-  }> = this.fb.nonNullable.group(
-    {
-      email: ['', [Validators.email, this.needUpdateValidator]],
-      password: ['', [this.needUpdateValidator]],
-    },
-  );
+  }> = this.fb.nonNullable.group({
+    email: ['', [Validators.email, this.needUpdateValidator]],
+    password: ['', [this.needUpdateValidator]],
+  });
 
   onSubmit() {
     if (this.loginForm.valid) {

@@ -1,7 +1,7 @@
 {
-  "name": "auth-feature-sign-up",
-  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/client/auth/feature/sign-up/src",
+  "name": "client-auth-feature",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/auth/feature/src",
   "prefix": "yw",
   "projectType": "library",
   "tags": [],
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/client/auth/feature/sign-up/jest.config.ts"
+        "jestConfig": "libs/client/auth/feature/jest.config.ts"
       }
     },
     "lint": {

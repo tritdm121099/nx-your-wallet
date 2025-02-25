@@ -4,7 +4,8 @@ import { authGuard, publishGuard } from '@yw/client/auth/data-access';
 export const webRoutes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./layouts/public-layout').then(m => m.PublishLayoutComponent),
+    loadComponent: () =>
+      import('./layouts/public-layout').then((m) => m.PublishLayoutComponent),
     canMatch: [publishGuard],
     loadChildren: () => [
       {
@@ -17,17 +18,19 @@ export const webRoutes: Routes = [
       {
         path: 'login',
         loadComponent: () =>
-          import('@yw/client/auth/login').then((mod) => mod.LoginComponent),
+          import('@yw/client-auth-feature').then(
+            (mod) => mod.LoginComponent
+          ),
       },
       {
         path: 'sign-up',
         loadComponent: () =>
-          import('@yw/client/auth/sign-up').then((mod) => mod.SignUpComponent),
+          import('@yw/client-auth-feature').then((mod) => mod.SignUpComponent),
       },
       {
         path: 'auth/google-oauth-success-redirect',
         loadComponent: () =>
-          import('@yw/client/auth/login').then(
+          import('@yw/client-auth-feature').then(
             (mod) => mod.GoogleRedirectComponent
           ),
       },
@@ -36,7 +39,8 @@ export const webRoutes: Routes = [
   {
     path: '',
     canMatch: [authGuard],
-    loadComponent: () => import('./layouts/layout').then(m => m.LayoutComponent),
+    loadComponent: () =>
+      import('./layouts/layout').then((m) => m.LayoutComponent),
     canLoad: [authGuard],
     loadChildren: () => [
       {
@@ -51,6 +55,6 @@ export const webRoutes: Routes = [
   {
     path: '**',
     redirectTo: '',
-    pathMatch: 'full'
-  }
+    pathMatch: 'full',
+  },
 ];

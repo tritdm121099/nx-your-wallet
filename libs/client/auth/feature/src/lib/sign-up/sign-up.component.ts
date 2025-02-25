@@ -17,9 +17,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '@yw/client/auth/data-access';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpError, RegisterErrorCodes } from '@yw/fe-be-interfaces';
-import {
-  translateTextKeys,
-} from '@yw/client/shell/data-access';
+import { translateTextKeys } from '@yw/client/shell/data-access';
 
 @Component({
   selector: 'yw-sign-up',
@@ -87,10 +85,7 @@ import {
 
           <ng-template #emailErrorTpl let-control>
             @if (control.errors?.['email']) {
-            {{
-              textsForm.errors.validPlease
-                | translate : { field: 'Email' }
-            }}
+            {{ textsForm.errors.validPlease | translate : { field: 'Email' } }}
             } @if (control.errors?.['required']) {
             {{ textsForm.errors.required | translate : { field: 'Email' } }}
             } @if (control.errors?.['haveRegistered']) {
@@ -120,7 +115,10 @@ import {
             {{
               textsForm.errors.minLength
                 | translate
-                  : { min: 8, field: texts.common.password | translate | lowercase }
+                  : {
+                      min: 8,
+                      field: texts.common.password | translate | lowercase
+                    }
             }}
             } @if (control.errors?.['required']) {
             {{
@@ -140,7 +138,9 @@ import {
                 type="password"
                 nz-input
                 formControlName="confirm"
-                placeholder="{{ textsPage.forms.confirmPassword.placeHolder | translate }}"
+                placeholder="{{
+                  textsPage.forms.confirmPassword.placeHolder | translate
+                }}"
                 required
               />
             </nz-input-group>
